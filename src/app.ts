@@ -1,19 +1,19 @@
+import 'module-alias/register';
 import 'reflect-metadata';
-import * as express from "express";
-import {Container} from 'typedi';
-import AService from "./services/AService";
+import dotenv from 'dotenv'
+dotenv.config()
+import express from 'express'
+import setMiiddleware from './middleware'
+import setRouter from "./router";
 
-const app: express.Application = express();
 
-app.get(
-    "/",
-    (req: express.Request, res: express.Response, next: express.NextFunction) => {
-        const aService = Container.get(AService);
+const {PORT} = process.env
 
-        res.json({
-            value: aService.test()
-        })
-    }
-);
+const app = express()
 
-export default app;
+setMiiddleware(app)
+setRouter(app)
+
+app.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`)
+}) // eslint-disable-line no-console
